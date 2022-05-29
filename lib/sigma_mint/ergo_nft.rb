@@ -1,11 +1,14 @@
 module SigmaMint
   class ErgoNft
+    attr_accessor :name, :description, :royalty, :sha, :ipfs_hash, :minted
+
     def initialize(name: nil,
                    description: nil,
                    royalty: 0,
                    ipfs_hash: nil,
                    sha: nil,
                    minted: true) 
+
 
       @name = name
       @description = description

@@ -1,3 +1,4 @@
+require 'sigma'
 require 'sigma_mint'
 
 module SigmaMint
@@ -105,7 +106,7 @@ module SigmaMint
       return r
     end
 
-    def mint_picture_nft(address, ergo_nft, real: false, address_ergo_tree: nil)
+    def mint_picture_nft(address, ergo_nft, royalty: 0, real: false, address_ergo_tree: nil)
 
       if address_ergo_tree.nil?
         r = address_to_tree(address)
@@ -113,7 +114,7 @@ module SigmaMint
       end
 
       # get encoded values
-      encoded = get_encoded_values(ergo_nft, royalty: @royalty, address_ergo_tree: address_ergo_tree)
+      encoded = get_encoded_values(ergo_nft, royalty: royalty, address_ergo_tree: address_ergo_tree)
 
       royalty_params = {
         requests: [],
@@ -188,12 +189,15 @@ module SigmaMint
       end
     end
 
+    # @param ergo_nft [ErgoNft] 
+    # @param royalty: [Integer] Default: 0
     def get_encoded_values(ergo_nft, royalty: 0, address_ergo_tree: nil)
       raise "address_ergo_tree required!" if address_ergo_tree.nil?
-
+    
+      # NOTE from EIP-24:  (Royalty) R4 of this box is an Int, showing 1000 * royalty percentage of the artwork. e.g, 20 for 2% royalty.
       ErgoEncodedNFT.new(
         ipfs_link: sigma_encode_str(ergo_nft.ipfs_link),
-        royalty: Sigma::Constant.with_i32(ergo_nft.royalty).to_base16_string,
+        royalty: Sigma::Constant.with_i32(royalty * 10).to_base16_string,
         sha: sigma_encode_str(ergo_nft.sha),
         address_ergo_tree: sigma_encode_str(address_ergo_tree), 
       ) 
@@ -208,7 +212,7 @@ module SigmaMint
 
     def sigma_encode_str(str)
       Sigma::Constant.with_bytes(
-        str.each_byte.map { |b| b.to_s(16) }.join
+        str.each_byte.map { |b| b.to_s(8).to_i }
       ).to_base16_string
     end
   end

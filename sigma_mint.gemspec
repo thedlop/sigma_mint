@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'faraday', '~> 2.2.0'
   s.add_dependency 'faraday-multipart', '~> 1.0.3'
   s.add_development_dependency 'test-unit', '~> 3.5'
-  s.add_development_dependency 'yard', '>= 0.9.20'
+  s.add_development_dependency 'yard', '~> 0.9.20'
   s.test_files = Dir["tests/**/*.rb"]
   s.require_paths = ["lib"]
   s.required_ruby_version = '>= 3.0.1'
