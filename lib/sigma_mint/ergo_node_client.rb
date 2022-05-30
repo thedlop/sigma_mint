@@ -106,7 +106,7 @@ module SigmaMint
       return r
     end
 
-    def mint_picture_nft(address, ergo_nft, royalty: 0, real: false, address_ergo_tree: nil)
+    def mint_picture_nft(address, ergo_nft, real: false, address_ergo_tree: nil)
 
       if address_ergo_tree.nil?
         r = address_to_tree(address)
@@ -114,7 +114,7 @@ module SigmaMint
       end
 
       # get encoded values
-      encoded = get_encoded_values(ergo_nft, royalty: royalty, address_ergo_tree: address_ergo_tree)
+      encoded = get_encoded_values(ergo_nft, address_ergo_tree: address_ergo_tree)
 
       royalty_params = {
         requests: [],
@@ -190,29 +190,33 @@ module SigmaMint
     end
 
     # @param ergo_nft [ErgoNft] 
-    # @param royalty: [Integer] Default: 0
-    def get_encoded_values(ergo_nft, royalty: 0, address_ergo_tree: nil)
+    def get_encoded_values(ergo_nft, address_ergo_tree: nil)
       raise "address_ergo_tree required!" if address_ergo_tree.nil?
     
+      #puts "Royalty: #{ergo_nft.royalty} => #{Sigma::Constant.with_i32(ergo_nft.royalty * 10).to_base16_string}"
       # NOTE from EIP-24:  (Royalty) R4 of this box is an Int, showing 1000 * royalty percentage of the artwork. e.g, 20 for 2% royalty.
       ErgoEncodedNFT.new(
         ipfs_link: sigma_encode_str(ergo_nft.ipfs_link),
-        royalty: Sigma::Constant.with_i32(royalty * 10).to_base16_string,
-        sha: sigma_encode_str(ergo_nft.sha),
-        address_ergo_tree: sigma_encode_str(address_ergo_tree), 
+        royalty: Sigma::Constant.with_i32(ergo_nft.royalty * 10).to_base16_string,
+        sha: sigma_encode_hex_str(ergo_nft.sha),
+        address_ergo_tree: sigma_encode_hex_str(address_ergo_tree), 
       ) 
+    end
 
-      #ErgoEncodedNFT.new(
-        #royalty: '04a001',
-        #address_ergo_tree: '0e240008cd029c7a290a2ba90a0fd8fb9d4490cd915c2538e2c5e1836e7fa6003052cd40d72f',
-        #sha: '0e20739aaaedd3822179ca2136160b4ec35d31ea50c37d8d2c914c9ad68377ea4cda',
-        #ipfs_link: '0e5d68747470733a2f2f676174657761792e70696e6174612e636c6f75642f697066732f6261666b7265696474746b766f337534636566343475696a77637966753571323567687666627133357275776a63746532323262787032736d3369',
-      #)
+    # Some pre-encoded values (sha, address_ergo_tree) are already hex-encoded
+    def hex_to_str(hex_str)
+      hex_str.scan(/../).map { |hc| hc.hex.chr }.join
+    end
+
+    # Convert hex -> str before encoding with Sigma::Constant
+    def sigma_encode_hex_str(hex_str)
+      str = hex_to_str(hex_str)
+      sigma_encode_str(str)
     end
 
     def sigma_encode_str(str)
       Sigma::Constant.with_bytes(
-        str.each_byte.map { |b| b.to_s(8).to_i }
+        str.each_byte.map { |c| c }
       ).to_base16_string
     end
   end
