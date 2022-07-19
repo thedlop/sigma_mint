@@ -5,7 +5,7 @@ Ergo assets utility library
 This library uses [sigma_rb](https://github.com/thedlop/sigma_rb) which has extra installation instructions, please ensure it installs correctly first.
 
 Add to Gemfile
-`gem 'sigma_mint', '0.1.1'`  
+`gem 'sigma_mint', '0.1.2'`  
 
 ### Usage
 In an effort to save time I will share code that called this lib below. This code is straight from my [two tens](https://twotens.art) project source.
