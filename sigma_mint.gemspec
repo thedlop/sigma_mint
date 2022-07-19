@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.files = Dir.glob("{lib}/**/*")
   s.files += %w(sigma_mint.gemspec README.md LICENSE)
   s.add_dependency 'dotenv', '~> 2.7.6'
-  s.add_dependency 'sigma_rb', '0.1.5'
+  s.add_dependency 'sigma_rb', '~> 0.2.0'
   s.add_dependency 'faraday', '~> 2.2.0'
   s.add_dependency 'faraday-multipart', '~> 1.0.3'
   s.add_development_dependency 'test-unit', '~> 3.5'

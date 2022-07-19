@@ -5,7 +5,7 @@ PATH
       dotenv (~> 2.7.6)
       faraday (~> 2.2.0)
       faraday-multipart (~> 1.0.3)
-      sigma_rb (= 0.1.5)
+      sigma_rb (~> 0.2.0)
 
 GEM
   remote: https://rubygems.org/
@@ -14,24 +14,24 @@ GEM
     faraday (2.2.0)
       faraday-net_http (~> 2.0)
       ruby2_keywords (>= 0.0.4)
-    faraday-multipart (1.0.3)
-      multipart-post (>= 1.2, < 3)
+    faraday-multipart (1.0.4)
+      multipart-post (~> 2)
     faraday-net_http (2.0.3)
     ffi (1.15.5)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
-    multipart-post (2.1.1)
+    multipart-post (2.2.3)
     power_assert (2.0.1)
     rake (13.0.6)
     ruby2_keywords (0.0.5)
-    sigma_rb (0.1.5)
+    sigma_rb (0.2.0)
       ffi-compiler (= 1.0.1)
       rake (~> 13.0)
     test-unit (3.5.3)
       power_assert
     webrick (1.7.0)
-    yard (0.9.27)
+    yard (0.9.28)
       webrick (~> 1.7.0)
 
 PLATFORMS
